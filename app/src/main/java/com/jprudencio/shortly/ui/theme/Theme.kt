@@ -10,15 +10,19 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Cyan,
+    secondary = Red,
+    tertiary = DarkViolet,
+    background = OffWhite,
+    onBackground = White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Cyan,
+    secondary = Red,
+    tertiary = DarkViolet,
+    background = OffWhite,
+    onBackground = White
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

@@ -2,10 +2,19 @@ package com.jprudencio.shortly.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Primary
+val Cyan = Color(0xFF2ACFCF)
+val DarkViolet = Color(0xFF3B3054)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Secondary
+val Red = Color(0xFFF46262)
+
+// Neutral
+val LightGray = Color(0xFFBFBFBF)
+val Gray = Color(0xFF9E9AA7)
+val GrayishViolet = Color(0xFF35323E)
+val VeryDarkViolet = Color(0x232127)
+
+//  Background Colors
+val White = Color(0xFFFFFFFF)
+val OffWhite = Color(0xFFF0F1F6)
