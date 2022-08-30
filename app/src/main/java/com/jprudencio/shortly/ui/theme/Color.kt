@@ -13,7 +13,7 @@ val Red = Color(0xFFF46262)
 val LightGray = Color(0xFFBFBFBF)
 val Gray = Color(0xFF9E9AA7)
 val GrayishViolet = Color(0xFF35323E)
-val VeryDarkViolet = Color(0x232127)
+val VeryDarkViolet = Color(0xFF232127)
 
 //  Background Colors
 val White = Color(0xFFFFFFFF)

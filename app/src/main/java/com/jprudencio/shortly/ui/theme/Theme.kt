@@ -1,28 +1,27 @@
 package com.jprudencio.shortly.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-private val DarkColorScheme = darkColorScheme(
+private val DarkColorScheme = darkColors(
     primary = Cyan,
     secondary = Red,
-    tertiary = DarkViolet,
+    primaryVariant = DarkViolet,
     background = OffWhite,
     onBackground = White
 )
 
-private val LightColorScheme = lightColorScheme(
+private val LightColorScheme = lightColors(
     primary = Cyan,
     secondary = Red,
-    tertiary = DarkViolet,
+    primaryVariant = DarkViolet,
     background = OffWhite,
-    onBackground = White
+    onBackground = GrayishViolet,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -38,25 +37,20 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun ShortlyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
     val systemUiController = rememberSystemUiController()
     SideEffect {
-        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = !darkTheme)
+        systemUiController.setSystemBarsColor(colorScheme.background, darkIcons = !darkTheme)
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colors = colorScheme,
         typography = Typography,
         content = content
     )

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Shortly</string>
+    <string name="home_title_get_started">Let\'s get started!</string>
+    <string name="home_description_paste_your_link">Paste your first link into \nthe field to shorten it</string>
+    <string name="shortly_box_short_button">SHORTEN IT!</string>
+    <string name="shortly_box_input_hint">Shorten a link here</string>
+    <string name="shortly_box_input_description">Please add a link here</string>
 </resources>
