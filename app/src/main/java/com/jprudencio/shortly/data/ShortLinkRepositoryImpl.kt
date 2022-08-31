@@ -1,6 +1,7 @@
 package com.jprudencio.shortly.data
 
 import com.jprudencio.shortly.model.ShortLink
+import com.jprudencio.shortly.ui.home.shortLinksPreviewData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -15,7 +16,7 @@ class ShortLinkRepositoryImpl(
             shortLinkRemoteDataSource.shortLink(url).getOrElse { error ->
                 return@withContext Result.failure(error)
             }.result.run {
-                ShortLink("http://shortlink.com", "http://originallink.com")
+                ShortLink("1","http://shortlink.com", "http://originallink.com")
             }
         )
     }
@@ -24,10 +25,7 @@ class ShortLinkRepositoryImpl(
         withContext(defaultDispatcher) {
             // TODO
             Result.success(
-                listOf(
-                    ShortLink("http://shortlink1.com", "http://originallink1.com"),
-                    ShortLink("http://shortlink2.com", "http://originallink2.com")
-                )
+                shortLinksPreviewData
             )
         }
 }

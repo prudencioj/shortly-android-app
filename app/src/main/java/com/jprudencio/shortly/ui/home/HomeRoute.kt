@@ -13,18 +13,19 @@ fun HomeRoute(
     val lazyListState: LazyListState = rememberLazyListState()
 
     viewModel.uiState.collectAsState().value.let { state ->
-        when (state) {
-            is HomeUiState.HasHistory -> HomeScreen(
-                uiState = state,
-                modifier = Modifier,
-                lazyListState = lazyListState,
-                onSelectLink = {
-                    viewModel.deleteUrl("")
-                }
-            )
-            is HomeUiState.NoHistory -> {
-
+        HomeScreen(
+            uiState = state,
+            modifier = Modifier,
+            lazyListState = lazyListState,
+            onShortenLink = {
+                viewModel.shortUrl(it)
+            },
+            onDeleteLink = {
+                viewModel.deleteShortLink(it)
+            },
+            onLinkClipboardCopied = {
+                viewModel.copyShortLink(it)
             }
-        }
+        )
     }
 }

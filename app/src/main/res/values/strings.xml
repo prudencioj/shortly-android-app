@@ -5,4 +5,7 @@
     <string name="shortly_box_short_button">SHORTEN IT!</string>
     <string name="shortly_box_input_hint">Shorten a link here</string>
     <string name="shortly_box_input_description">Please add a link here</string>
+    <string name="home_link_history_title">Your Link History</string>
+    <string name="home_link_history_item_copy">COPY</string>
+    <string name="home_link_history_item_copied">COPIED!</string>
 </resources>

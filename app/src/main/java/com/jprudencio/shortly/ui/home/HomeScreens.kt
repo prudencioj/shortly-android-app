@@ -1,8 +1,12 @@
 package com.jprudencio.shortly.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -11,9 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -21,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jprudencio.shortly.R
+import com.jprudencio.shortly.model.ShortLink
+import com.jprudencio.shortly.ui.theme.Cyan
 import com.jprudencio.shortly.ui.theme.DarkViolet
 import com.jprudencio.shortly.ui.theme.LightGray
 import com.jprudencio.shortly.ui.theme.ShortlyTheme
@@ -30,71 +39,167 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
     lazyListState: LazyListState,
-    onSelectLink: (String) -> Unit
+    onShortenLink: (String) -> Unit,
+    onDeleteLink: (ShortLink) -> Unit,
+    onLinkClipboardCopied: (ShortLink) -> Unit
 ) {
-    Column {
-        WelcomeTutorial(Modifier.weight(1.0f, true))
-        ShortlyBox()
-    }
-
-    /*
-    Scaffold { contentPadding ->
-        if (uiState is HomeUiState.HasHistory) {
-            LazyColumn(
-                contentPadding = WindowInsets.systemBars
-                    .only(WindowInsetsSides.Bottom)
-                    .add(WindowInsets(top = contentPadding.calculateTopPadding()))
-                    .asPaddingValues(),
-                state = lazyListState
-            ) {
-                itemsIndexed(items = uiState.shortLinks) { _, item ->
-                    ShortLinkItem(shortLink = item, onSelect = onSelectLink)
+    Scaffold(modifier = modifier) { contentPadding ->
+        Column {
+            when (uiState) {
+                is HomeUiState.NoHistory -> {
+                    WelcomeTutorial(modifier = Modifier.weight(1.0f, true))
+                }
+                is HomeUiState.HasHistory -> {
+                    ShortLinkList(
+                        modifier = Modifier.weight(1.0f, true),
+                        lazyListState = lazyListState,
+                        shortLinks = uiState.shortLinks,
+                        shortLinkClipboardCopied = uiState.copiedLink,
+                        onDeleteButtonClick = { onDeleteLink.invoke(it) },
+                        onShortLinkClipboardCopied = { onLinkClipboardCopied.invoke(it) }
+                    )
                 }
             }
-        } else {
-            Greeting(name = "empty screen")
-        }
-    }*/
-}
-
-/*
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Composable
-fun ShortLinkItem(shortLink: ShortLink, onSelect: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(20.dp, 8.dp)
-            .clickable {
-                onSelect(shortLink.shortLink)
-            }
-    ) {
-
-        Column(
-            verticalArrangement = Arrangement.Top,
-        ) {
-
-            Column(
-                modifier = Modifier.padding(8.dp, 12.dp)
-            ) {
-                Text(
-                    text = shortLink.shortLink,
-                    style = MaterialTheme.typography.h1
-                )
-                Text(
-                    text = shortLink.originalLink,
-                    style = MaterialTheme.typography.subtitle1
-                )
-            }
+            ShortlyBox(onButtonClick = { onShortenLink.invoke(it) })
         }
     }
 }
-*/
+
+@Composable
+fun ShortLinkList(
+    modifier: Modifier = Modifier,
+    shortLinks: List<ShortLink>,
+    shortLinkClipboardCopied: ShortLink? = null,
+    lazyListState: LazyListState,
+    onDeleteButtonClick: (ShortLink) -> Unit,
+    onShortLinkClipboardCopied: (ShortLink) -> Unit
+) {
+    LazyColumn(
+        modifier = modifier,
+        state = lazyListState,
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))
+    ) {
+        item {
+            Text(
+                text = stringResource(R.string.home_link_history_title),
+                style = MaterialTheme.typography.h2,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+            )
+        }
+
+        itemsIndexed(items = shortLinks,
+            key = { _, item -> item.id }
+        ) { _, item ->
+            ShortLinkItem(
+                shortLink = item,
+                onDeleteButtonClick = {
+                    onDeleteButtonClick.invoke(it)
+                },
+                isClipboardCopied = shortLinkClipboardCopied?.id == item.id,
+                onShortLinkClipboardCopied = {
+                    onShortLinkClipboardCopied.invoke(it)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun ShortLinkItem(
+    modifier: Modifier = Modifier,
+    shortLink: ShortLink,
+    isClipboardCopied: Boolean,
+    onDeleteButtonClick: (ShortLink) -> Unit,
+    onShortLinkClipboardCopied: (ShortLink) -> Unit
+) {
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+    val buttonLabel = if (isClipboardCopied) {
+        stringResource(R.string.home_link_history_item_copied)
+    } else {
+        stringResource(R.string.home_link_history_item_copy)
+    }
+    val buttonColor = if (isClipboardCopied) DarkViolet else Cyan
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        Column {
+            Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_small)))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(
+                    start = dimensionResource(id = R.dimen.padding_medium),
+                    end = dimensionResource(id = R.dimen.padding_medium),
+                    top = dimensionResource(id = R.dimen.padding_small),
+                    bottom = dimensionResource(id = R.dimen.padding_small)
+                )
+            ) {
+                Text(
+                    text = shortLink.originalLink,
+                    style = MaterialTheme.typography.h2,
+                    maxLines = 1,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .weight(1f)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_del),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.clickable(onClick = {
+                        onDeleteButtonClick.invoke(shortLink)
+                    })
+                )
+            }
+            Divider(
+                color = LightGray, thickness = 1.dp
+            )
+            Text(
+                text = shortLink.shortLink,
+                style = MaterialTheme.typography.h2,
+                maxLines = 1,
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.padding(
+                    start = dimensionResource(id = R.dimen.padding_medium),
+                    end = dimensionResource(id = R.dimen.padding_medium),
+                    top = dimensionResource(id = R.dimen.padding_small),
+                    bottom = dimensionResource(id = R.dimen.padding_small)
+                )
+            )
+            Button(
+                onClick = {
+                    clipboardManager.setText(AnnotatedString(shortLink.shortLink))
+                    onShortLinkClipboardCopied.invoke(shortLink)
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = buttonColor),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = dimensionResource(id = R.dimen.padding_medium),
+                        end = dimensionResource(id = R.dimen.padding_medium),
+                        top = dimensionResource(id = R.dimen.padding_small),
+                        bottom = dimensionResource(id = R.dimen.padding_small)
+                    )
+            ) {
+                Text(
+                    text = buttonLabel,
+                    style = MaterialTheme.typography.h2,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .alignByBaseline()
+                        .wrapContentHeight()
+                )
+            }
+            Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_small)))
+        }
+    }
+}
 
 @Composable
 fun WelcomeTutorial(modifier: Modifier = Modifier) {
@@ -152,7 +257,10 @@ fun WelcomeTutorial(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ShortlyBox(modifier: Modifier = Modifier) {
+fun ShortlyBox(
+    modifier: Modifier = Modifier,
+    onButtonClick: (String) -> Unit
+) {
     val inputValue = remember { mutableStateOf(TextFieldValue()) }
 
     Surface(
@@ -208,7 +316,10 @@ fun ShortlyBox(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_small)))
             Button(
-                onClick = {},
+                onClick = {
+                    onButtonClick.invoke(inputValue.value.text)
+                    inputValue.value = TextFieldValue("")
+                },
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
@@ -225,16 +336,50 @@ fun ShortlyBox(modifier: Modifier = Modifier) {
     }
 }
 
+// Preview
+// FIXME change to private
+val shortLinksPreviewData = generatePreviewData()
+
+fun generatePreviewData(entries: Int = 0): List<ShortLink> {
+    val data = mutableListOf<ShortLink>()
+    for (i in 1 until entries) {
+        data.add(ShortLink(i.toString(), "http://shortly.com/$i", "http://averylongurl.com/$i"))
+    }
+    return data
+}
+
 @Preview(
     device = Devices.PIXEL_4_XL
 )
 @Composable
-fun PreviewHomeScreen(modifier: Modifier = Modifier) {
+fun PreviewHistoryHomeScreen(modifier: Modifier = Modifier) {
+    val lazyListState: LazyListState = rememberLazyListState()
+
     ShortlyTheme {
         HomeScreen(
-            modifier,
+            modifier = modifier,
+            uiState = HomeUiState.HasHistory(shortLinksPreviewData, null, false, emptyList()),
+            lazyListState = lazyListState,
+            onShortenLink = {},
+            onDeleteLink = {},
+            onLinkClipboardCopied = {}
+        )
+    }
+}
+
+/*
+@Preview(
+    device = Devices.PIXEL_4_XL
+)
+@Composable
+fun PreviewEmptyHomeScreen(modifier: Modifier = Modifier) {
+    val lazyListState: LazyListState = rememberLazyListState()
+
+    ShortlyTheme {
+        HomeScreen(
+            modifier = modifier,
             uiState = HomeUiState.NoHistory(false, emptyList()),
-            lazyListState = LazyListState(),
+            lazyListState = lazyListState,
             onSelectLink = {}
         )
     }
@@ -259,3 +404,18 @@ fun PreviewWelcomeTutorial(modifier: Modifier = Modifier) {
     }
 }
 
+@Preview(device = Devices.PIXEL_4_XL)
+@Composable
+fun PreviewShortLinkList(modifier: Modifier = Modifier) {
+    val lazyListState: LazyListState = rememberLazyListState()
+
+    ShortlyTheme {
+        ShortLinkList(
+            modifier = modifier,
+            shortLinks =
+            shortLinksPreviewData,
+            lazyListState = lazyListState
+        )
+    }
+}
+ */
