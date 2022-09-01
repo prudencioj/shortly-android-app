@@ -1,5 +1,6 @@
 package com.jprudencio.shortly.di
 
+import com.jprudencio.shortly.data.ShortLinkLocalDataSource
 import com.jprudencio.shortly.data.ShortLinkRemoteDataSource
 import com.jprudencio.shortly.data.ShortLinkRepository
 import com.jprudencio.shortly.data.ShortLinkRepositoryImpl
@@ -16,7 +17,12 @@ class RepositoriesModule {
     @Provides
     fun provideShortLinkRepository(
         shortLinkRemoteDataSource: ShortLinkRemoteDataSource,
+        shortLinkLocalDataSource: ShortLinkLocalDataSource,
         @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
     ): ShortLinkRepository =
-        ShortLinkRepositoryImpl(shortLinkRemoteDataSource, defaultDispatcher)
+        ShortLinkRepositoryImpl(
+            shortLinkRemoteDataSource,
+            shortLinkLocalDataSource,
+            defaultDispatcher
+        )
 }
