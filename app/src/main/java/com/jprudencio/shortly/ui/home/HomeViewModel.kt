@@ -1,8 +1,5 @@
 package com.jprudencio.shortly.ui.home
 
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jprudencio.shortly.data.ShortLinkRepository
@@ -29,32 +26,35 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
         )
 
     init {
-        refreshHistory()
+        loadHistory()
     }
 
     fun shortUrl(url: String) {
-        // FIXME temporary
         viewModelScope.launch {
+            val result = shortLinkRepo.short(url)
+
             viewModelState.update { state ->
-                var oldList = state.shortLinks ?: emptyList()
-                oldList = oldList.toMutableList()
-                oldList.add(ShortLink(url, "$url/shortly", url))
-                state.copy(shortLinks = oldList, isLoading = false)
+                result.getOrElse { throwable ->
+                    val errorMessages = state.errorMessages + (throwable.message ?: "")
+                    return@update state.copy(errorMessages = errorMessages, isLoading = false)
+                }
+                state.copy(errorMessages = emptyList())
             }
         }
     }
 
     fun deleteShortLink(shortLink: ShortLink) {
-        // FIXME temporary
-        viewModelState.update { state ->
-            var oldList = state.shortLinks ?: emptyList()
-            oldList = oldList.toMutableList()
-            oldList.remove(shortLink)
+        viewModelState.update { it.copy(isLoading = true) }
 
-            if (oldList.isEmpty()) {
-                state.copy(shortLinks = null, isLoading = false)
-            } else {
-                state.copy(shortLinks = oldList, isLoading = false)
+        viewModelScope.launch {
+            val result = shortLinkRepo.deleteShortLink(shortLink)
+
+            viewModelState.update { state ->
+                result.getOrElse { throwable ->
+                    val errorMessages = state.errorMessages + (throwable.message ?: "")
+                    return@update state.copy(errorMessages = errorMessages, isLoading = false)
+                }
+                state.copy(errorMessages = emptyList())
             }
         }
     }
@@ -65,20 +65,21 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
         }
     }
 
-    private fun refreshHistory() {
+    private fun loadHistory() {
         viewModelState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
-            val result = shortLinkRepo.getShortLinkHistory()
-            viewModelState.update { state ->
-                val feed = result.getOrElse { throwable ->
-                    val errorMessages = state.errorMessages + (throwable.message ?: "")
-                    return@update state.copy(errorMessages = errorMessages, isLoading = false)
-                }
-                if (feed.isEmpty()) {
-                    state.copy(shortLinks = null, isLoading = false)
-                } else {
-                    state.copy(shortLinks = feed, isLoading = false)
+            val linkHistoryFlow = shortLinkRepo.getShortLinkHistory()
+            linkHistoryFlow.collect { shortLinksHistory ->
+
+                viewModelState.update { state ->
+                    state.copy(shortLinks = shortLinksHistory.map {
+                        ShortLink(
+                            it.id,
+                            it.shortLink,
+                            it.originalLink
+                        )
+                    }, isLoading = false)
                 }
             }
         }
@@ -110,10 +111,10 @@ private data class HomeViewModelState(
 ) {
     fun toUiState(): HomeUiState =
         when {
-            shortLinks != null -> {
+            !shortLinks.isNullOrEmpty() -> {
                 HomeUiState.HasHistory(
                     shortLinks = shortLinks,
-                    copiedLink,
+                    copiedLink = copiedLink,
                     isLoading = isLoading,
                     errorMessages = errorMessages,
                 )

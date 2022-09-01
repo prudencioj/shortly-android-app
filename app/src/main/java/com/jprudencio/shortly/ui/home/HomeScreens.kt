@@ -1,5 +1,6 @@
 package com.jprudencio.shortly.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +26,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,6 +64,14 @@ fun HomeScreen(
                 }
             }
             ShortlyBox(onButtonClick = { onShortenLink.invoke(it) })
+
+            if (uiState.errorMessages.isNotEmpty()) {
+                Toast.makeText(
+                    LocalContext.current,
+                    uiState.errorMessages.last(),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }
@@ -143,10 +154,11 @@ fun ShortLinkItem(
                 Text(
                     text = shortLink.originalLink,
                     style = MaterialTheme.typography.h2,
-                    maxLines = 1,
                     color = MaterialTheme.colors.onBackground,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(1f, fill = true)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_del),
@@ -164,6 +176,7 @@ fun ShortLinkItem(
                 text = shortLink.shortLink,
                 style = MaterialTheme.typography.h2,
                 maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier.padding(
                     start = dimensionResource(id = R.dimen.padding_medium),
@@ -337,16 +350,6 @@ fun ShortlyBox(
 }
 
 // Preview
-// FIXME change to private
-val shortLinksPreviewData = generatePreviewData()
-
-fun generatePreviewData(entries: Int = 0): List<ShortLink> {
-    val data = mutableListOf<ShortLink>()
-    for (i in 1 until entries) {
-        data.add(ShortLink(i.toString(), "http://shortly.com/$i", "http://averylongurl.com/$i"))
-    }
-    return data
-}
 
 @Preview(
     device = Devices.PIXEL_4_XL
@@ -358,7 +361,7 @@ fun PreviewHistoryHomeScreen(modifier: Modifier = Modifier) {
     ShortlyTheme {
         HomeScreen(
             modifier = modifier,
-            uiState = HomeUiState.HasHistory(shortLinksPreviewData, null, false, emptyList()),
+            uiState = HomeUiState.HasHistory(ShortLinksPreviewData, null, false, emptyList()),
             lazyListState = lazyListState,
             onShortenLink = {},
             onDeleteLink = {},
