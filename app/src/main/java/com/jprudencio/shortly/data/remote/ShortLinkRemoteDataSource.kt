@@ -1,6 +1,6 @@
-package com.jprudencio.shortly.data
+package com.jprudencio.shortly.data.remote
 
-import com.jprudencio.shortly.api.ShortLinkApiClient
+import com.jprudencio.shortly.data.remote.api.ShortLinkApiClient
 import com.jprudencio.shortly.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

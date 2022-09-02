@@ -1,9 +1,9 @@
 package com.jprudencio.shortly.di
 
 import com.jprudencio.shortly.BuildConfig
-import com.jprudencio.shortly.api.ShortLinkApiClient
-import com.jprudencio.shortly.api.retrofit.ShrtcodeClient
-import com.jprudencio.shortly.api.retrofit.adapters.ResultCallAdapterFactory
+import com.jprudencio.shortly.data.remote.api.ShortLinkApiClient
+import com.jprudencio.shortly.data.remote.api.retrofit.ShrtcodeClient
+import com.jprudencio.shortly.data.remote.api.retrofit.adapters.ResultCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.jprudencio.shortly.api.responses
+package com.jprudencio.shortly.data.remote.api.responses
 
 
 import com.google.gson.annotations.SerializedName

@@ -1,4 +1,4 @@
-package com.jprudencio.shortly.data.room
+package com.jprudencio.shortly.data.local.room
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

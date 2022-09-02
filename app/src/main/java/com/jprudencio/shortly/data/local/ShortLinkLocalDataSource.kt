@@ -1,7 +1,7 @@
-package com.jprudencio.shortly.data
+package com.jprudencio.shortly.data.local
 
-import com.jprudencio.shortly.data.room.ShortLinkLocal
-import com.jprudencio.shortly.data.room.ShortLinksDao
+import com.jprudencio.shortly.data.local.room.ShortLinkLocal
+import com.jprudencio.shortly.data.local.room.ShortLinksDao
 import com.jprudencio.shortly.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

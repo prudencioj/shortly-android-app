@@ -1,7 +1,7 @@
 package com.jprudencio.shortly.di
 
-import com.jprudencio.shortly.data.ShortLinkLocalDataSource
-import com.jprudencio.shortly.data.ShortLinkRemoteDataSource
+import com.jprudencio.shortly.data.local.ShortLinkLocalDataSource
+import com.jprudencio.shortly.data.remote.ShortLinkRemoteDataSource
 import com.jprudencio.shortly.data.ShortLinkRepository
 import com.jprudencio.shortly.data.ShortLinkRepositoryImpl
 import dagger.Module

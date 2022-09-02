@@ -8,4 +8,5 @@
     <string name="home_link_history_title">Your Link History</string>
     <string name="home_link_history_item_copy">COPY</string>
     <string name="home_link_history_item_copied">COPIED!</string>
+    <string name="general_error_try_again">Unexpected error, please try again.</string>
 </resources>

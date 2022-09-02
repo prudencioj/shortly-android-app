@@ -1,9 +1,12 @@
 package com.jprudencio.shortly.data
 
-import com.jprudencio.shortly.data.room.ShortLinkLocal
+import com.jprudencio.shortly.data.local.ShortLinkLocalDataSource
+import com.jprudencio.shortly.data.local.room.ShortLinkLocal
+import com.jprudencio.shortly.data.remote.ShortLinkRemoteDataSource
 import com.jprudencio.shortly.model.ShortLink
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class ShortLinkRepositoryImpl(
@@ -14,7 +17,7 @@ class ShortLinkRepositoryImpl(
 
     override suspend fun short(url: String): Result<ShortLink> = withContext(defaultDispatcher) {
         shortLinkRemoteDataSource.shortLink(url).getOrElse {
-            return@withContext Result.failure(Throwable("Unexpected error happened, please try again with a valid URL."))
+            return@withContext Result.failure(it)
         }.result.run {
             // save to local data source
             val shortLinkLocal =
@@ -34,11 +37,20 @@ class ShortLinkRepositoryImpl(
                 )
             )
             if (count >= 0) Result.success(count.toLong()) else
-                Result.failure(Throwable("Failed to delete short link"))
+                Result.failure(Throwable())
         }
 
-    override suspend fun getShortLinkHistory(): Flow<List<ShortLinkLocal>> =
+    override suspend fun getShortLinkHistory(): Flow<List<ShortLink>> =
         withContext(defaultDispatcher) {
             shortLinkLocalDataSource.getAllShortLinks()
+                .map {
+                    it.map { localLink ->
+                        ShortLink(
+                            localLink.id,
+                            localLink.shortLink,
+                            localLink.originalLink
+                        )
+                    }
+                }
         }
 }

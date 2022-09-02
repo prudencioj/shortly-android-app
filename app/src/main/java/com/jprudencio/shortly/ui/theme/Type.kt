@@ -1,8 +1,6 @@
 package com.jprudencio.shortly.ui.theme
 
 import androidx.compose.material.Typography
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -15,14 +13,6 @@ private val Poppins = FontFamily(
     Font(R.font.poppins_medium),
     Font(R.font.poppins_regular)
 )
-
-/**
- * https://medium.com/androiddevelopers/fixing-font-padding-in-compose-text-768cd232425b
-@OptIn(ExperimentalTextApi::class)
-platformStyle = PlatformTextStyle(
-includeFontPadding = false
-)
-*/
 
 val Typography = Typography(
     defaultFontFamily = Poppins,
@@ -39,10 +29,6 @@ val Typography = Typography(
         fontSize = 17.sp
     ),
     button = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 17.sp
-    ),
-    caption = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 17.sp
     )

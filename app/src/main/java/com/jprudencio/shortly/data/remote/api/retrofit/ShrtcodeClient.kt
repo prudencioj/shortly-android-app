@@ -1,7 +1,7 @@
-package com.jprudencio.shortly.api.retrofit
+package com.jprudencio.shortly.data.remote.api.retrofit
 
-import com.jprudencio.shortly.api.ShortLinkApiClient
-import com.jprudencio.shortly.api.responses.ShortResponse
+import com.jprudencio.shortly.data.remote.api.ShortLinkApiClient
+import com.jprudencio.shortly.data.remote.api.responses.ShortResponse
 import retrofit2.http.POST
 import retrofit2.http.Query
 

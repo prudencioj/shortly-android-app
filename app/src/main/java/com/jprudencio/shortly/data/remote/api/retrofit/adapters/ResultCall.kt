@@ -1,4 +1,4 @@
-package com.jprudencio.shortly.api.retrofit.adapters
+package com.jprudencio.shortly.data.remote.api.retrofit.adapters
 
 import okhttp3.Request
 import okio.Timeout

@@ -1,4 +1,4 @@
-package com.jprudencio.shortly.data.room
+package com.jprudencio.shortly.data.local.room
 
 import androidx.compose.runtime.Immutable
 import androidx.room.ColumnInfo

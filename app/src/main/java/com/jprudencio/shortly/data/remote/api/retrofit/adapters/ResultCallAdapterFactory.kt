@@ -1,4 +1,4 @@
-package com.jprudencio.shortly.api.retrofit.adapters
+package com.jprudencio.shortly.data.remote.api.retrofit.adapters
 
 import retrofit2.Call
 import retrofit2.CallAdapter

@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection", "SpellCheckingInspection")
+
 package com.jprudencio.shortly
 
 import androidx.test.platform.app.InstrumentationRegistry

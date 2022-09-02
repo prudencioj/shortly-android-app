@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
         )
 
     init {
-        loadHistory()
+        loadHistoryUpdates()
     }
 
     fun shortUrl(url: String) {
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
         }
     }
 
-    private fun loadHistory() {
+    private fun loadHistoryUpdates() {
         viewModelState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
@@ -73,13 +73,7 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
             linkHistoryFlow.collect { shortLinksHistory ->
 
                 viewModelState.update { state ->
-                    state.copy(shortLinks = shortLinksHistory.map {
-                        ShortLink(
-                            it.id,
-                            it.shortLink,
-                            it.originalLink
-                        )
-                    }, isLoading = false)
+                    state.copy(shortLinks = shortLinksHistory, isLoading = false)
                 }
             }
         }

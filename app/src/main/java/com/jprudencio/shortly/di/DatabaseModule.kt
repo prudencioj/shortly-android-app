@@ -2,8 +2,8 @@ package com.jprudencio.shortly.di
 
 import android.content.Context
 import androidx.room.Room
-import com.jprudencio.shortly.data.room.ShortLinksDao
-import com.jprudencio.shortly.data.room.ShortlyDatabase
+import com.jprudencio.shortly.data.local.room.ShortLinksDao
+import com.jprudencio.shortly.data.local.room.ShortlyDatabase
 import com.jprudencio.shortly.utils.SHORTLY_DB_NAME
 import dagger.Module
 import dagger.Provides
