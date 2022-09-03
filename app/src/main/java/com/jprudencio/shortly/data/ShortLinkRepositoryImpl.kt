@@ -1,7 +1,6 @@
 package com.jprudencio.shortly.data
 
 import com.jprudencio.shortly.data.local.ShortLinkLocalDataSource
-import com.jprudencio.shortly.data.local.room.ShortLinkLocal
 import com.jprudencio.shortly.data.remote.ShortLinkRemoteDataSource
 import com.jprudencio.shortly.model.ShortLink
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,22 +19,20 @@ class ShortLinkRepositoryImpl(
             return@withContext Result.failure(it)
         }.result.run {
             // save to local data source
-            val shortLinkLocal =
-                shortLinkLocalDataSource.addShortLink(shortLink, originalLink)
-
-            Result.success(ShortLink(shortLinkLocal.id, shortLink, originalLink))
+            val shortLink =
+                shortLinkLocalDataSource.addShortLink(
+                    ShortLink(
+                        shortLink = shortLink,
+                        originalLink = originalLink
+                    )
+                )
+            Result.success(shortLink)
         }
     }
 
     override suspend fun deleteShortLink(shortLink: ShortLink): Result<Long> =
         withContext(defaultDispatcher) {
-            val count = shortLinkLocalDataSource.deleteShortLink(
-                ShortLinkLocal(
-                    shortLink.id,
-                    shortLink.shortLink,
-                    shortLink.originalLink
-                )
-            )
+            val count = shortLinkLocalDataSource.deleteShortLink(shortLink)
             if (count >= 0) Result.success(count.toLong()) else
                 Result.failure(Throwable())
         }

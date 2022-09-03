@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.jprudencio.shortly.data.local.room
 
 import androidx.room.*
