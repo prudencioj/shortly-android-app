@@ -5,8 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.jprudencio.shortly.R
 import com.jprudencio.shortly.ui.theme.ShortlyTheme
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -27,7 +29,19 @@ fun ShortlyBox(
     modifier: Modifier = Modifier,
     onButtonClick: (String) -> Unit
 ) {
-    val inputValue = remember { mutableStateOf(TextFieldValue()) }
+    val inputValue =
+        rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
+    val displayHelper = rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(5000)
+        displayHelper.value = inputValue.value.text.isEmpty()
+    }
+    val inputBorderColor =
+        if (displayHelper.value) MaterialTheme.colors.error else MaterialTheme.colors.surface
+    val inputTextColor =
+        if (displayHelper.value) MaterialTheme.colors.error else MaterialTheme.colors.onSurface
+    val inputTextId =
+        if (displayHelper.value) R.string.shortly_box_input_description else R.string.shortly_box_input_hint
 
     Surface(
         modifier = modifier,
@@ -54,15 +68,18 @@ fun ShortlyBox(
                 .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.padding_large))
         ) {
-            TextField(
+            OutlinedTextField(
                 value = inputValue.value,
-                onValueChange = { inputValue.value = it },
+                onValueChange = {
+                    inputValue.value = it
+                    displayHelper.value = false
+                },
                 placeholder = {
                     Text(
-                        stringResource(id = R.string.shortly_box_input_hint),
+                        stringResource(id = inputTextId),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.button,
-                        color = MaterialTheme.colors.onSurface,
+                        color = inputTextColor,
                         modifier = Modifier.fillMaxWidth()
                     )
                 },
@@ -76,8 +93,10 @@ fun ShortlyBox(
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(dimensionResource(id = R.dimen.round_corner_normal)),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = MaterialTheme.colors.surface
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    backgroundColor = MaterialTheme.colors.surface,
+                    focusedBorderColor = inputBorderColor,
+                    unfocusedBorderColor = inputBorderColor
                 )
             )
             Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_small)))
