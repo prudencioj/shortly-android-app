@@ -36,6 +36,7 @@ fun ShortLinkList(
     onDeleteButtonClick: (ShortLink) -> Unit,
     onShortLinkClipboardCopied: (ShortLink) -> Unit
 ) {
+    Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_large)))
     LazyColumn(
         modifier = modifier,
         state = lazyListState,

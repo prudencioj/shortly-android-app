@@ -1,10 +1,9 @@
 package com.jprudencio.shortly.ui.home.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,32 +24,36 @@ fun HomeScreen(
     onDeleteLink: (ShortLink) -> Unit,
     onLinkClipboardCopied: (ShortLink) -> Unit
 ) {
-    Scaffold(modifier = modifier) {
-        Column {
-            when (uiState) {
-                is HomeUiState.NoHistory -> {
-                    WelcomeTutorial(modifier = Modifier.weight(1.0f, true))
-                }
-                is HomeUiState.HasHistory -> {
-                    ShortLinkList(
-                        modifier = Modifier.weight(1.0f, true),
-                        lazyListState = lazyListState,
-                        shortLinks = uiState.shortLinks,
-                        shortLinkClipboardCopied = uiState.copiedLink,
-                        onDeleteButtonClick = { onDeleteLink.invoke(it) },
-                        onShortLinkClipboardCopied = { onLinkClipboardCopied.invoke(it) }
-                    )
-                }
+    Column(
+        modifier = Modifier.padding(
+            WindowInsets.systemBars
+                .only(WindowInsetsSides.Bottom)
+                .asPaddingValues()
+        )
+    ) {
+        when (uiState) {
+            is HomeUiState.NoHistory -> {
+                WelcomeTutorial(modifier = Modifier.weight(1.0f, true))
             }
-            ShortlyBox(onButtonClick = { onShortenLink.invoke(it) })
+            is HomeUiState.HasHistory -> {
+                ShortLinkList(
+                    modifier = Modifier.weight(1.0f, true),
+                    lazyListState = lazyListState,
+                    shortLinks = uiState.shortLinks,
+                    shortLinkClipboardCopied = uiState.copiedLink,
+                    onDeleteButtonClick = { onDeleteLink.invoke(it) },
+                    onShortLinkClipboardCopied = { onLinkClipboardCopied.invoke(it) }
+                )
+            }
+        }
+        ShortlyBox(onButtonClick = { onShortenLink.invoke(it) })
 
-            if (uiState.errorMessages.isNotEmpty()) {
-                Toast.makeText(
-                    LocalContext.current,
-                    stringResource(id = R.string.general_error_try_again),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        if (uiState.errorMessages.isNotEmpty()) {
+            Toast.makeText(
+                LocalContext.current,
+                stringResource(id = R.string.general_error_try_again),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
