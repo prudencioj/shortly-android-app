@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +27,7 @@ import com.jprudencio.shortly.R
 import com.jprudencio.shortly.model.ShortLink
 import com.jprudencio.shortly.ui.theme.ShortlyTheme
 
+const val ShortLinkListTestTag = "ShortLinkListTestTag"
 
 @Composable
 fun ShortLinkList(
@@ -38,7 +40,7 @@ fun ShortLinkList(
 ) {
     Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_large)))
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.testTag(ShortLinkListTestTag),
         state = lazyListState,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium))

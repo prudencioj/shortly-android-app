@@ -1,5 +1,6 @@
 package com.jprudencio.shortly.data
 
+import android.webkit.URLUtil
 import com.jprudencio.shortly.data.local.ShortLinkLocalDataSource
 import com.jprudencio.shortly.data.remote.ShortLinkRemoteDataSource
 import com.jprudencio.shortly.model.ShortLink
@@ -15,6 +16,9 @@ class ShortLinkRepositoryImpl(
 ) : ShortLinkRepository {
 
     override suspend fun short(url: String): Result<ShortLink> = withContext(defaultDispatcher) {
+        if (!URLUtil.isNetworkUrl(url)) {
+            return@withContext Result.failure(Throwable("Invalid URl"))
+        }
         shortLinkRemoteDataSource.shortLink(url).getOrElse {
             return@withContext Result.failure(it)
         }.result.run {

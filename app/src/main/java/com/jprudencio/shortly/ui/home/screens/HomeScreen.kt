@@ -25,7 +25,7 @@ fun HomeScreen(
     onLinkClipboardCopied: (ShortLink) -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(
+        modifier = modifier.padding(
             WindowInsets.systemBars
                 .only(WindowInsetsSides.Bottom)
                 .asPaddingValues()

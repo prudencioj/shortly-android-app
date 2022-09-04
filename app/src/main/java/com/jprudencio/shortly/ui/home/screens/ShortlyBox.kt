@@ -1,8 +1,11 @@
 package com.jprudencio.shortly.ui.home.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -97,7 +100,11 @@ fun ShortlyBox(
                     backgroundColor = MaterialTheme.colors.surface,
                     focusedBorderColor = inputBorderColor,
                     unfocusedBorderColor = inputBorderColor
-                )
+                ),
+                keyboardActions = KeyboardActions(onDone = {
+                    onButtonClick.invoke(inputValue.value.text)
+                    inputValue.value = TextFieldValue("")
+                })
             )
             Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_small)))
             Button(
