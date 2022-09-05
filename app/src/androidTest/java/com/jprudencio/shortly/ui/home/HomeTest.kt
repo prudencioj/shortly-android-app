@@ -22,14 +22,6 @@ class HomeTest {
         .outerRule(hiltRule)
         .around(composeTestRule)
 
-    /*@Test
-    fun welcomeTutorialIsDisplayed() {
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.home_title_get_started))
-            .assertIsDisplayed()
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.home_link_history_title))
-            .assertDoesNotExist()
-    }*/
-
     @Test
     fun shortLinkHistoryIsVisible() {
         composeTestRule.onNodeWithTag(ShortLinkListTestTag).assertIsDisplayed()

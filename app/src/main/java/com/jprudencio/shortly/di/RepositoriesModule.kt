@@ -1,7 +1,7 @@
 package com.jprudencio.shortly.di
 
 import com.jprudencio.shortly.data.local.ShortLinkLocalDataSource
-import com.jprudencio.shortly.data.remote.ShortLinkRemoteDataSource
+import com.jprudencio.shortly.data.remote.ShortLinkRemoteDataSourceImpl
 import com.jprudencio.shortly.data.ShortLinkRepository
 import com.jprudencio.shortly.data.ShortLinkRepositoryImpl
 import dagger.Module
@@ -16,7 +16,7 @@ class RepositoriesModule {
 
     @Provides
     fun provideShortLinkRepository(
-        shortLinkRemoteDataSource: ShortLinkRemoteDataSource,
+        shortLinkRemoteDataSource: ShortLinkRemoteDataSourceImpl,
         shortLinkLocalDataSource: ShortLinkLocalDataSource,
         @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
     ): ShortLinkRepository =
