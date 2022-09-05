@@ -5,6 +5,9 @@ import com.jprudencio.shortly.model.ShortLink
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
+/**
+ * A fake [ShortLinkRepository] to be used in tests. Persists the shortened links history in memory.
+ */
 class FakeShortLinkRepository(initialData: List<ShortLink> = ShortLinkList) :
     ShortLinkRepository {
     private val data = initialData.toMutableList()
@@ -17,8 +20,8 @@ class FakeShortLinkRepository(initialData: List<ShortLink> = ShortLinkList) :
         return Result.success(shortLink)
     }
 
-    override suspend fun deleteShortLink(shortLink: ShortLink): Result<Long> {
-        return Result.success(shortLink.id)
+    override suspend fun deleteShortLink(shortLink: ShortLink): Result<ShortLink> {
+        return Result.success(shortLink)
     }
 
     override suspend fun getShortLinkHistory(): Flow<List<ShortLink>> {

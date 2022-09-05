@@ -16,11 +16,6 @@ object ShortLinkTestData {
         true, ShortResult(
             "OK",
             "https://shortlink.com",
-            "",
-            "",
-            "",
-            "",
-            "",
             "https://originallink.com"
         )
     )

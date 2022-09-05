@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
+/**
+ * A [ViewModel] for the Home screen. Responsible for getting the data from the data layer.
+ * Emitting new [HomeUiState] every time there is a new state to be represented in the UI layer.
+ */
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepository) :
     ViewModel() {

@@ -8,12 +8,19 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/**
+ * A fake [ShortLinkRemoteDataSource] to be used in tests. Returning always the same response provided.
+ */
 class FakeShortLinkRemoteDataSource @OptIn(ExperimentalCoroutinesApi::class)
 @Inject constructor(
     private val dispatcher: CoroutineDispatcher = UnconfinedTestDispatcher(),
     private val shortResult: ShortResponse? = ShortLinkRemoteResponse
 ) : ShortLinkRemoteDataSource {
     override suspend fun shortLink(url: String) = withContext(dispatcher) {
-        if (shortResult != null) Result.success(shortResult) else Result.failure(Throwable())
+        if (shortResult != null) {
+            Result.success(shortResult)
+        } else {
+            Result.failure(Throwable())
+        }
     }
 }

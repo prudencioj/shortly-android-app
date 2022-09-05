@@ -3,6 +3,13 @@ package com.jprudencio.shortly.data.remote.api.responses
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Data class that represents a response from shrtco API.
+ *
+ * Not all of the fields returned from the API are represented here; only the ones used in this
+ * project are listed below. For a full list of fields, consult the API documentation
+ * [here](https://shrtco.de/docs).
+ */
 data class ShortResponse(
     @SerializedName("ok")
     val ok: Boolean,
@@ -15,16 +22,6 @@ data class ShortResult(
     val code: String,
     @SerializedName("short_link")
     val shortLink: String,
-    @SerializedName("full_short_link")
-    val fullShortLink: String,
-    @SerializedName("short_link2")
-    val shortLink2: String,
-    @SerializedName("full_short_link2")
-    val fullShortLink2: String,
-    @SerializedName("share_link")
-    val shareLink: String,
-    @SerializedName("full_share_link")
-    val fullShareLink: String,
     @SerializedName("original_link")
     val originalLink: String
 )

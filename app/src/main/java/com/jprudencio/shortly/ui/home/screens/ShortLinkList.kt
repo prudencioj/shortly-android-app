@@ -27,6 +27,9 @@ import com.jprudencio.shortly.R
 import com.jprudencio.shortly.model.ShortLink
 import com.jprudencio.shortly.ui.theme.ShortlyTheme
 
+/**
+ * Test Tag that identifies the list of shortened links in history.
+ */
 const val ShortLinkListTestTag = "ShortLinkListTestTag"
 
 @Composable

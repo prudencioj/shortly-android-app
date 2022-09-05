@@ -15,6 +15,11 @@ import com.jprudencio.shortly.model.ShortLink
 import com.jprudencio.shortly.ui.home.HomeUiState
 import com.jprudencio.shortly.ui.theme.ShortlyTheme
 
+/**
+ * Home screen that will display UI components depending on the [HomeUiState] provided.
+ * If no history is provided will display a [WelcomeTutorial] otherwise will show the history of shortened links in a [ShortLinkList].
+ * [ShortlyBox] will always be visible being the action component to shorten new links.
+ */
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,

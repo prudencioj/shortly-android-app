@@ -2,11 +2,11 @@ package com.jprudencio.shortly.data.remote.api.retrofit.adapters
 
 import okhttp3.Request
 import okio.Timeout
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.HttpException
-import retrofit2.Response
+import retrofit2.*
 
+/**
+ * Enables [Retrofit] calls to return a [Result] instead of a [Response].
+ */
 class ResultCall<T>(private val delegate: Call<T>) :
     Call<Result<T>> {
 

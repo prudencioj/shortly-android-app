@@ -18,8 +18,8 @@ class FakeShortLinkRepository : ShortLinkRepository {
         return Result.success(ShortLink(data.size.toLong(), url, url))
     }
 
-    override suspend fun deleteShortLink(shortLink: ShortLink): Result<Long> {
-        return Result.success(shortLink.id)
+    override suspend fun deleteShortLink(shortLink: ShortLink): Result<ShortLink> {
+        return Result.success(shortLink)
     }
 
     override suspend fun getShortLinkHistory(): Flow<List<ShortLink>> {

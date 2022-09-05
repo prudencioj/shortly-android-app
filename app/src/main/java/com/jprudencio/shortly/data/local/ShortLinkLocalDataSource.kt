@@ -8,6 +8,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/**
+ * A Data Source responsible of handling a record of shortened links, persisting them in local data storage.
+ */
 class ShortLinkLocalDataSource @Inject constructor(
     private val shortLinksDao: ShortLinksDao,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher

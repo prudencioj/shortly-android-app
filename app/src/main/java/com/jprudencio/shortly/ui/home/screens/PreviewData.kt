@@ -2,6 +2,9 @@ package com.jprudencio.shortly.ui.home.screens
 
 import com.jprudencio.shortly.model.ShortLink
 
+/**
+ * Fake list of shortened links to be used in Compose Previews.
+ */
 val ShortLinksPreviewData = listOf(
     ShortLink(
         1L,
