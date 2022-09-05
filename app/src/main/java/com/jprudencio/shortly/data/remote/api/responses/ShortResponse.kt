@@ -28,12 +28,3 @@ data class ShortResult(
     @SerializedName("original_link")
     val originalLink: String
 )
-
-data class ShortErrorResponse(
-    @SerializedName("ok")
-    val ok: Boolean,
-    @SerializedName("error_code")
-    val errorCode: Int,
-    @SerializedName("error")
-    val errorMessage: String
-)
