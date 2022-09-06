@@ -6,11 +6,9 @@ Using Swift or Kotlin, your challenge is to build out a single page mobile app f
 
 URL shortening is a technique on the Web in which a Uniform Resource Locator (URL) may be made substantially shorter and still direct to the required page. This is achieved by using a redirect that links to the web page that has a long URL. For example, the URL "https://example.com/assets/category_B/subcategory_C/Foo/" can be shortened to "https://example.com/Foo", and the URL "http://example.com/about/index.html" can be shortened to "https://goo.gl/aO3Ssc ".
 
-Your challenge is to build a native iOS or Android app, integrate with the [shrtcode API](https://app.shrtco.de/docs) and get it looking as close to the design as possible. There are plenty of libraries and dependencies availble, feel free to use them. Reactive programming is a plus. 
+Your challenge is to build a native Android app, integrate with the [shrtcode API](https://app.shrtco.de/docs) and get it looking as close to the design as possible. There are plenty of libraries and dependencies available, feel free to use them. Reactive programming is a plus. 
 
-In case of iOS, it is recommended to buid UI programatically using UIKit and not use any storyboard or xib. We prefer to use combine or RxSwift.
-
-The assignment should take around 4-6 hours ideally but you can spend time as much as you need, we don't evaluate the time.
+The assignment should take around 4-6 hours ideally.
 
 Your users should be able to:
 
@@ -32,7 +30,7 @@ There is also a `style-guide.md` file containing the information you'll need, su
 
 ### Evaluation Criteria
 
--   Using **Swift** or **Kotlin** best practices. 
+-   Using **Kotlin** best practices. 
 -   Show us your work through your commit history
 -   We're looking for you to produce working code, with enough room to demonstrate how to structure components in a small program
 -   Completeness: did you complete the features?
@@ -47,10 +45,3 @@ There is also a `style-guide.md` file containing the information you'll need, su
 -  Make sure to include all source code in the repository.
 -  We recommend using latest tools which are stable(currently Xcode ~13.2 or Android Studio Bumblebee ~ 2021.1.1. Do NOT use any beta versions. Make sure that your solution works fine before submitting and it will not take a lot of time for our team to build and run your code. If it takes a lot of time to setup and run the code, we ll reject the solution.
 
-### CodeSubmit
-
-Please organize, design, test, and document your code as if it were going into production - then push your changes to the master branch. After you have pushed your code, you may submit the assignment on the assignment page.
-
-**Have fun building!** 🚀
-
-The MAYD Group GmbH Team
