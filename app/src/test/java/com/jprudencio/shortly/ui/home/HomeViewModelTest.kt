@@ -5,6 +5,8 @@ import com.jprudencio.shortly.data.ShortLinkTestData
 import com.jprudencio.shortly.rules.MainDispatcherRule
 import junit.framework.Assert.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -38,5 +40,17 @@ class HomeViewModelTest {
             (uiState as HomeUiState.HasHistory).shortLinks,
             ShortLinkTestData.ShortLinkList
         )
+    }
+
+    @Test
+    fun shortUrlUpdatesUiState() = runTest {
+        val homeViewModel = HomeViewModel(FakeShortLinkRepository(emptyList()))
+
+        homeViewModel.uiState.drop(1).first()
+        assertTrue(homeViewModel.uiState.first() is HomeUiState.NoHistory)
+
+        homeViewModel.shortUrl("http://testurl.com")
+
+        assertTrue(homeViewModel.uiState.value is HomeUiState.HasHistory)
     }
 }
