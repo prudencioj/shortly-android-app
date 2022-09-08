@@ -5,6 +5,7 @@ import com.jprudencio.shortly.data.local.room.ShortLinksDao
 import com.jprudencio.shortly.di.IODispatcher
 import com.jprudencio.shortly.model.ShortLink
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -21,8 +22,8 @@ class ShortLinkLocalDataSource @Inject constructor(
             shortLink.copy(id = id)
         }
 
-    suspend fun getAllShortLinks() = withContext(ioDispatcher) {
-        shortLinksDao.getAllShortLinks()
+    fun getAllShortLinks(): Flow<List<ShortLinkLocal>> {
+        return shortLinksDao.getAllShortLinks()
     }
 
     suspend fun deleteShortLink(shortLink: ShortLink) = withContext(ioDispatcher) {

@@ -59,17 +59,16 @@ class ShortLinkRepositoryImpl(
      * Every time that a new entry is added/removed the flow will emit the list of the entire history.
      * Note if the same link is added multiple times it will be stored as different entries in the history.
      */
-    override suspend fun getShortLinkHistory(): Flow<List<ShortLink>> =
-        withContext(defaultDispatcher) {
-            shortLinkLocalDataSource.getAllShortLinks()
-                .map {
-                    it.map { localLink ->
-                        ShortLink(
-                            localLink.id,
-                            localLink.shortLink,
-                            localLink.originalLink
-                        )
-                    }
+    override fun getShortLinkHistory(): Flow<List<ShortLink>> {
+        return shortLinkLocalDataSource.getAllShortLinks()
+            .map {
+                it.map { localLink ->
+                    ShortLink(
+                        localLink.id,
+                        localLink.shortLink,
+                        localLink.originalLink
+                    )
                 }
-        }
+            }
+    }
 }

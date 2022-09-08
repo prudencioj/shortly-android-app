@@ -12,5 +12,5 @@ interface ShortLinkRepository {
 
     suspend fun deleteShortLink(shortLink: ShortLink): Result<ShortLink>
 
-    suspend fun getShortLinkHistory(): Flow<List<ShortLink>>
+    fun getShortLinkHistory(): Flow<List<ShortLink>>
 }
