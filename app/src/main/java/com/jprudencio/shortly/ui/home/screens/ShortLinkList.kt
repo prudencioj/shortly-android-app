@@ -7,7 +7,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +57,7 @@ fun ShortLinkList(
         item {
             Text(
                 text = stringResource(R.string.home_link_history_title),
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -91,9 +97,9 @@ fun ShortLinkItem(
         stringResource(R.string.home_link_history_item_copy)
     }
     val buttonColor = if (isClipboardCopied) {
-        MaterialTheme.colors.primaryVariant
+        MaterialTheme.colorScheme.primary
     } else {
-        MaterialTheme.colors.primary
+        MaterialTheme.colorScheme.primary
     }
 
     Card(
@@ -114,8 +120,8 @@ fun ShortLinkItem(
             ) {
                 Text(
                     text = shortLink.originalLink,
-                    style = MaterialTheme.typography.h2,
-                    color = MaterialTheme.colors.onBackground,
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
@@ -131,14 +137,14 @@ fun ShortLinkItem(
                 )
             }
             Divider(
-                color = MaterialTheme.colors.onSurface, thickness = 1.dp
+                color = MaterialTheme.colorScheme.onSurface, thickness = 1.dp
             )
             Text(
                 text = shortLink.shortLink,
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.headlineLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(
                     start = dimensionResource(id = R.dimen.padding_medium),
                     end = dimensionResource(id = R.dimen.padding_medium),
@@ -147,7 +153,7 @@ fun ShortLinkItem(
                 )
             )
             Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = buttonColor),
+                colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -163,7 +169,7 @@ fun ShortLinkItem(
             ) {
                 Text(
                     text = buttonLabel,
-                    style = MaterialTheme.typography.h2,
+                    style = MaterialTheme.typography.headlineLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .alignByBaseline()
@@ -182,7 +188,7 @@ fun ShortLinkItem(
 fun PreviewShortLinkList(modifier: Modifier = Modifier) {
     ShortlyTheme {
         ShortLinkList(
-            modifier = modifier.background(MaterialTheme.colors.background),
+            modifier = modifier.background(MaterialTheme.colorScheme.background),
             shortLinks =
             ShortLinksPreviewData,
             shortLinkClipboardCopied = null,

@@ -4,7 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -38,15 +43,15 @@ fun ShortlyBox(
         displayHelper.value = inputValue.value.text.isEmpty()
     }
     val inputBorderColor =
-        if (displayHelper.value) MaterialTheme.colors.error else MaterialTheme.colors.surface
+        if (displayHelper.value) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surface
     val inputTextColor =
-        if (displayHelper.value) MaterialTheme.colors.error else MaterialTheme.colors.onSurface
+        if (displayHelper.value) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
     val inputTextId =
         if (displayHelper.value) R.string.shortly_box_input_description else R.string.shortly_box_input_hint
 
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colors.primaryVariant
+        color = MaterialTheme.colorScheme.onPrimary
     ) {
         Box(
             contentAlignment = Alignment.TopEnd,
@@ -57,7 +62,7 @@ fun ShortlyBox(
                 painterResource(id = R.drawable.ic_shape),
                 contentDescription = null,
                 modifier = Modifier
-                    .background(MaterialTheme.colors.primaryVariant),
+                    .background(MaterialTheme.colorScheme.onPrimary),
                 tint = Color.Unspecified
             )
         }
@@ -79,26 +84,26 @@ fun ShortlyBox(
                     Text(
                         stringResource(id = inputTextId),
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.button,
+                        style = MaterialTheme.typography.displayLarge,
                         color = inputTextColor,
                         modifier = Modifier.fillMaxWidth()
                     )
                 },
                 textStyle = TextStyle(
-                    color = MaterialTheme.colors.onSurface,
-                    fontWeight = MaterialTheme.typography.h1.fontWeight,
-                    fontFamily = MaterialTheme.typography.h1.fontFamily,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = MaterialTheme.typography.headlineSmall.fontWeight,
+                    fontFamily = MaterialTheme.typography.headlineSmall.fontFamily,
                     textAlign = TextAlign.Center,
                 ),
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(dimensionResource(id = R.dimen.round_corner_normal)),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    backgroundColor = MaterialTheme.colors.surface,
+                /*colors = TextFieldDefaults.outlinedTextFieldColors(
+                    backgroundColor = MaterialTheme.colorScheme.surface,
                     focusedBorderColor = inputBorderColor,
                     unfocusedBorderColor = inputBorderColor
-                ),
+                ),*/
                 keyboardActions = KeyboardActions(onDone = {
                     onButtonClick.invoke(inputValue.value.text)
                     inputValue.value = TextFieldValue("")
@@ -115,7 +120,7 @@ fun ShortlyBox(
             ) {
                 Text(
                     text = stringResource(R.string.shortly_box_short_button),
-                    style = MaterialTheme.typography.h1,
+                    style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center
                 )
             }
