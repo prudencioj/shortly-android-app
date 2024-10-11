@@ -20,29 +20,17 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 
     // UI state exposed to the UI
-    val uiState = viewModelState
-        .map { it.toUiState() }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Eagerly,
-            viewModelState.value.toUiState()
-        )
-
-    init {
-        loadHistoryUpdates()
-    }
+    val uiState = combine(
+        viewModelState,
+        shortLinkRepo.getShortLinkHistory()
+    ) { state, history ->
+        state.copy(shortLinks = history, isLoading = false).toUiState()
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, viewModelState.value.toUiState())
 
     fun shortUrl(url: String) {
         viewModelScope.launch {
-            val result = shortLinkRepo.short(url)
-
-            viewModelState.update { state ->
-                result.getOrElse { throwable ->
-                    val errorMessages = state.errorMessages + (throwable.message ?: "")
-                    return@update state.copy(errorMessages = errorMessages, isLoading = false)
-                }
-                state.copy(errorMessages = emptyList())
-            }
+            // TODO: Handle errors
+            shortLinkRepo.short(url)
         }
     }
 
@@ -50,15 +38,8 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
         viewModelState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
-            val result = shortLinkRepo.deleteShortLink(shortLink)
-
-            viewModelState.update { state ->
-                result.getOrElse { throwable ->
-                    val errorMessages = state.errorMessages + (throwable.message ?: "")
-                    return@update state.copy(errorMessages = errorMessages, isLoading = false)
-                }
-                state.copy(errorMessages = emptyList())
-            }
+            // TODO: Handle errors
+            shortLinkRepo.deleteShortLink(shortLink)
         }
     }
 
@@ -67,44 +48,26 @@ class HomeViewModel @Inject constructor(private val shortLinkRepo: ShortLinkRepo
             state.copy(copiedLink = shortLink)
         }
     }
-
-    private fun loadHistoryUpdates() {
-        viewModelState.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            val linkHistoryFlow = shortLinkRepo.getShortLinkHistory()
-            linkHistoryFlow.collect { shortLinksHistory ->
-
-                viewModelState.update { state ->
-                    state.copy(shortLinks = shortLinksHistory, isLoading = false)
-                }
-            }
-        }
-    }
 }
 
 sealed interface HomeUiState {
     val isLoading: Boolean
-    val errorMessages: List<String>
 
     data class NoHistory(
-        override val isLoading: Boolean,
-        override val errorMessages: List<String>
+        override val isLoading: Boolean
     ) : HomeUiState
 
     data class HasHistory(
         val shortLinks: List<ShortLink>,
         val copiedLink: ShortLink? = null,
-        override val isLoading: Boolean,
-        override val errorMessages: List<String>
+        override val isLoading: Boolean
     ) : HomeUiState
 }
 
 private data class HomeViewModelState(
     val shortLinks: List<ShortLink>? = null,
     val copiedLink: ShortLink? = null,
-    val isLoading: Boolean = false,
-    val errorMessages: List<String> = emptyList()
+    val isLoading: Boolean = false
 ) {
     fun toUiState(): HomeUiState =
         when {
@@ -112,14 +75,13 @@ private data class HomeViewModelState(
                 HomeUiState.HasHistory(
                     shortLinks = shortLinks,
                     copiedLink = copiedLink,
-                    isLoading = isLoading,
-                    errorMessages = errorMessages,
+                    isLoading = isLoading
                 )
             }
+
             else -> {
                 HomeUiState.NoHistory(
-                    isLoading = isLoading,
-                    errorMessages = errorMessages,
+                    isLoading = isLoading
                 )
             }
         }

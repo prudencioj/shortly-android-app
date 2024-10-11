@@ -24,7 +24,6 @@ class HomeViewModelTest {
         val uiState = homeViewModel.uiState.value
         assertTrue(uiState is HomeUiState.NoHistory)
         assertFalse(uiState.isLoading)
-        assertTrue(uiState.errorMessages.isEmpty())
     }
 
     @Test
@@ -34,7 +33,6 @@ class HomeViewModelTest {
         val uiState = homeViewModel.uiState.value
         assertTrue(uiState is HomeUiState.HasHistory)
         assertFalse(uiState.isLoading)
-        assertTrue(uiState.errorMessages.isEmpty())
 
         assertEquals(
             (uiState as HomeUiState.HasHistory).shortLinks,

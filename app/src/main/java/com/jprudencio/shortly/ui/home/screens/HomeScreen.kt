@@ -52,14 +52,6 @@ fun HomeScreen(
             }
         }
         ShortlyBox(onButtonClick = { onShortenLink.invoke(it) })
-
-        if (uiState.errorMessages.isNotEmpty()) {
-            Toast.makeText(
-                LocalContext.current,
-                stringResource(id = R.string.general_error_try_again),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
     }
 }
 
@@ -73,7 +65,7 @@ fun PreviewEmptyHistoryHomeScreen(modifier: Modifier = Modifier) {
     ShortlyTheme {
         HomeScreen(
             modifier = modifier,
-            uiState = HomeUiState.NoHistory(false, emptyList()),
+            uiState = HomeUiState.NoHistory(false),
             onShortenLink = {},
             onDeleteLink = {},
             onLinkClipboardCopied = {}
@@ -91,7 +83,7 @@ fun PreviewHistoryHomeScreen(modifier: Modifier = Modifier) {
             modifier = modifier,
             uiState = HomeUiState.HasHistory(
                 ShortLinksPreviewData,
-                null, false, emptyList()
+                null, false
             ),
             onShortenLink = {},
             onDeleteLink = {},

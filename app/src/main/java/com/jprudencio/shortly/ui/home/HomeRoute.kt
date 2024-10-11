@@ -3,6 +3,7 @@ package com.jprudencio.shortly.ui.home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jprudencio.shortly.ui.home.screens.HomeScreen
 
 /**
@@ -13,7 +14,7 @@ import com.jprudencio.shortly.ui.home.screens.HomeScreen
 fun HomeRoute(
     viewModel: HomeViewModel
 ) {
-    viewModel.uiState.collectAsState().value.let { state ->
+    viewModel.uiState.collectAsStateWithLifecycle().value.let { state ->
         HomeScreen(
             uiState = state,
             modifier = Modifier,

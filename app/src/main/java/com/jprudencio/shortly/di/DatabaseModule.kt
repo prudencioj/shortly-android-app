@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.jprudencio.shortly.data.local.room.ShortLinksDao
 import com.jprudencio.shortly.data.local.room.ShortlyDatabase
-import com.jprudencio.shortly.utils.SHORTLY_DB_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +21,7 @@ class DatabaseModule {
         return Room.databaseBuilder(
             context,
             ShortlyDatabase::class.java,
-            SHORTLY_DB_NAME
+            "shortly-db"
         ).build()
     }
 

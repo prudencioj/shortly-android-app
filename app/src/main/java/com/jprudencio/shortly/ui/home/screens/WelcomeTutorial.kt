@@ -1,10 +1,10 @@
 package com.jprudencio.shortly.ui.home.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +23,7 @@ import com.jprudencio.shortly.ui.theme.ShortlyTheme
 fun WelcomeTutorial(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colors.background
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
@@ -54,8 +54,8 @@ fun WelcomeTutorial(modifier: Modifier = Modifier) {
                         start = dimensionResource(R.dimen.padding_medium),
                         end = dimensionResource(R.dimen.padding_medium)
                     ),
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onBackground
+                style = MaterialTheme.typography.h1,
+                color = MaterialTheme.colors.onBackground
             )
             Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_small)))
             Text(
@@ -67,8 +67,8 @@ fun WelcomeTutorial(modifier: Modifier = Modifier) {
                         start = dimensionResource(R.dimen.padding_medium),
                         end = dimensionResource(R.dimen.padding_medium)
                     ),
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onBackground
+                style = MaterialTheme.typography.h2,
+                color = MaterialTheme.colors.onBackground
             )
         }
     }

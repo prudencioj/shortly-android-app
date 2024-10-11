@@ -3,6 +3,7 @@ package com.jprudencio.shortly.di
 import com.jprudencio.shortly.data.local.ShortLinkLocalDataSource
 import com.jprudencio.shortly.data.remote.ShortLinkRemoteDataSourceImpl
 import com.jprudencio.shortly.data.ShortLinkRepository
+import com.jprudencio.shortly.data.ShortLinkRepositoryFakeImpl
 import com.jprudencio.shortly.data.ShortLinkRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -20,9 +21,11 @@ class RepositoriesModule {
         shortLinkLocalDataSource: ShortLinkLocalDataSource,
         @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
     ): ShortLinkRepository =
-        ShortLinkRepositoryImpl(
+        // FIXME API is down, using fake repository for now
+        /*ShortLinkRepositoryImpl(
             shortLinkRemoteDataSource,
             shortLinkLocalDataSource,
             defaultDispatcher
-        )
+        )*/
+        ShortLinkRepositoryFakeImpl()
 }
