@@ -1,5 +1,6 @@
-![Maintenance](https://img.shields.io/badge/Maintenance-On%20Going-brightgreen)
- **Important **: API used is down. Code is under maintenance migrating to new API's and libraries. 
+ ![Maintenance](https://img.shields.io/badge/Maintenance-On%20Going-brightgreen)
+ 
+__IMPORTANT__ shrtco.de API is down. Code is under maintenance migrating to new API's and libraries. 
 
 ### Shortly app
 
