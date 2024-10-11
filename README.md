@@ -1,15 +1,9 @@
+![Maintenance](https://img.shields.io/badge/Maintenance-On%20Going-brightgreen)
+ **Important **: API used is down. Code is under maintenance migrating to new API's and libraries. 
+
 ### Shortly app
 
-Important: API used is down. Code is under maintenance migrating to new API's and libraries. 
-
 The purpose was to develop an Android application for URL shortening, integrate with the [shrtcode API](https://app.shrtco.de/docs), and get it looking as close to the design as possible. Check `/code-challenge-requirements` folder for more details about the requirements.
-
-
-
-## Running Instructions
-
-To try out this app, you need to use [Android Studio Chipmunk](https://developer.android.com/studio).
-
 
 
 ## Solution
@@ -32,9 +26,10 @@ The application should be easily extended to a complex application with more scr
 
 ## Future improvements
 
--   Improve test code coverage 
+-   Migrate to Material 3.
+-   Fix existing tests and improve code coverate.
 -   The UI was built for small devices in mind. Though it should work reasonably in tablets, the UI is not otimized for it. An option can be to display the list in a grid for instance, instead of a simple vertical list. 
--   Improve error handling. At the moment a simple generic error message is shown to the user in a Toast. Different error messages could be provided to the user and the UI to display the error can also be improved (e.g. if related with the input text display within the Text Input).   
+-   Proper error handling in the VM and use Snackbars to communicate in the UI.
 -   Add more documentation and code comments.
 -   Add missing Proguard rules. 
 -   Create a Dark theme. Currently light and dark theme are the same. 
