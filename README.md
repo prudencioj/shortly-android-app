@@ -1,5 +1,7 @@
 ### Shortly app
 
+Important: API used is down. Code is under maintenance migrating to new API's and libraries. 
+
 The purpose was to develop an Android application for URL shortening, integrate with the [shrtcode API](https://app.shrtco.de/docs), and get it looking as close to the design as possible. Check `/code-challenge-requirements` folder for more details about the requirements.
 
 
